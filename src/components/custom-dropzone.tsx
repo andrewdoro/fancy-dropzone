@@ -1,9 +1,11 @@
 "use client";
 import { useUploadThing } from "@/utils/uploadthing";
 import { generateClientDropzoneAccept, generatePermittedFileTypes } from "uploadthing/client";
-import { Dropzone, DropzonePreview } from "./ui/dropzone";
+import { Dropzone, DropzoneEmpty, DropzonePlus, DropzonePreview } from "./ui/dropzone";
 import { useState } from "react";
 import Image from "next/image";
+import { Button } from "./ui/button";
+import { ImageIcon, PlusIcon } from "lucide-react";
 
 export const CustomDropzone = () => {
   const [files, setFiles] = useState<File[]>([]);
@@ -22,6 +24,11 @@ export const CustomDropzone = () => {
       }}
       className='border w-72 h-72'
       accept={fileTypes ? generateClientDropzoneAccept(fileTypes) : undefined}>
+      <DropzoneEmpty>
+        <ImageIcon />
+
+        <p>Drop your files here</p>
+      </DropzoneEmpty>
       {previews.map((preview) => (
         <DropzonePreview key={preview}>
           <Image
@@ -35,6 +42,12 @@ export const CustomDropzone = () => {
           />
         </DropzonePreview>
       ))}
+      <DropzonePlus>
+        <Button className='gap-2'>
+          <PlusIcon />
+          Add
+        </Button>
+      </DropzonePlus>
     </Dropzone>
   );
 };

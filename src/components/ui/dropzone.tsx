@@ -15,6 +15,7 @@ import { CrossIcon, ImageIcon, PlusIcon } from "lucide-react";
 import { Button } from "./button";
 
 interface DropzoneContextProps {
+  files: File[];
   open: () => void;
   onRemoveFile: (name: string) => void;
 }
@@ -61,6 +62,7 @@ export const Dropzone = ({
   return (
     <DropzoneContext.Provider
       value={{
+        files: values,
         onRemoveFile,
         open: props.open,
       }}>
@@ -73,13 +75,10 @@ export const Dropzone = ({
   );
 };
 
-export const DropzoneEmpty = () => {
-  return (
-    <div>
-      <ImageIcon />
-      <p>Drag & drop files here, or click to select files</p>
-    </div>
-  );
+export const DropzoneEmpty = ({ children }: { children: ReactNode }) => {
+  const { files } = useDropzoneContext();
+  if (files.length > 0) return null;
+  return <div>{children}</div>;
 };
 
 export const DropzoneDragging = () => {
@@ -104,11 +103,7 @@ export const DropzonePreviewRemove = ({ file }: { file: File }) => {
   );
 };
 
-export const DropzonePlus = () => {
+export const DropzonePlus = ({ children }: { children: ReactNode }) => {
   const { open } = useDropzoneContext();
-  return (
-    <Button onClick={open}>
-      <PlusIcon />
-    </Button>
-  );
+  return <div onClick={open}>{children}</div>;
 };
